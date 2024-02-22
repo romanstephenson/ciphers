@@ -1,0 +1,14 @@
+dotnew new mvc -o ciphers - to create the application with boilerplate code 
+code -r ciphers - open project in visual studio code
+dotnet dev-certs https --trust - to trust https development certificate on local machine
+dotnet watch run - to run project, which allows hot reload as changes are made where applicable
+
+dotnet tool uninstall --global dotnet-aspnet-codegenerator
+dotnet tool install --global dotnet-aspnet-codegenerator
+dotnet tool uninstall --global dotnet-ef
+dotnet tool install --global dotnet-ef
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Microsoft.EntityFrameworkCore.SQLite
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools

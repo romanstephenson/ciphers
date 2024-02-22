@@ -1,0 +1,42 @@
+@model Vigenere;
+
+@{
+    ViewData["Title"] = "Decipher Vigenere";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Vigenere Decipher</h1>
+    <p>You can enter the key and text below to be encrypted.</a>.</p>
+</div>
+
+@using (Html.BeginForm("Decipher","Vigenere",FormMethod.Post))
+{
+    <div class="form-group">
+        <label class="control-label" for="Keyword">Keyword:</label>
+        @Html.TextBoxFor(m => m.Keyword, new { Class = "form-control"})
+        <span class="text-danger"></span>
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="control-label" for="Ciphertext">CipherText:</label>
+        @Html.TextBoxFor(m => m.Ciphertext, new { Class = "form-control"})
+        <span class="text-danger"></span>
+    </div>
+    <br>
+    <div class="form-group">
+        <input type="submit" value="Decrypt" class="btn btn-primary" />
+    </div>
+}
+
+<br>
+<div class="form-group">
+     @if(@ViewBag.Plaintext == "")
+    {
+        <input class="form-control" type="text" value="Plaintext Will Appear Here" disabled>
+    }
+    else
+    {
+        <input class="form-control" type="text" value="@ViewBag.Plaintext" disabled>
+    }
+</div>
+
