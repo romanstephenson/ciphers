@@ -36,8 +36,6 @@ public class VigenereController : Controller
     [HttpPost]
     public IActionResult Decipher(Vigenere vigenere)
     {
-        // Console.WriteLine(vigenere.Ciphertext);
-        // Console.WriteLine(vigenere.Key);
         vigenere.Key = vigenere.GenerateKeyForDecrypt();
         cipheredVigenere.Plaintext = vigenere.OriginalText();
 
