@@ -11,7 +11,7 @@ public class Vigenere
     // This function generates the key in
     // a cyclic manner until it's length isi'nt
     // equal to the length of original text
-    public string GenerateKey( /*String str, String key*/)
+    public string GenerateKey()
     {
         //remove leading, trailing, and space within text
         string OriginalText = Plaintext.Trim().Replace(" ","").ToUpper();
@@ -37,7 +37,7 @@ public class Vigenere
     // This function generates the key in
     // a cyclic manner until it's length isi'nt
     // equal to the length of original text
-    public string GenerateKeyForDecrypt( /*String str, String key*/)
+    public string GenerateKeyForDecrypt()
     {
         //remove leading, trailing, and space within text
         string OriginalCiphertext = Ciphertext.Trim().Replace(" ","").ToUpper();
@@ -62,7 +62,7 @@ public class Vigenere
     
     // This function returns the encrypted text
     // generated with the help of the key
-    public string CipherText(/*String str,*/ String key)
+    public string CipherText( String key)
     {
         string OriginalText = Plaintext.Trim().Replace(" ","");
         
@@ -82,7 +82,7 @@ public class Vigenere
     
     // This function decrypts the encrypted text
     // and returns the original text
-    public string OriginalText(/*String cipher_text, String key*/)
+    public string OriginalText()
     { 
         string OriginalCipertext = Ciphertext.Trim().Replace(" ", "").ToUpper();
         string OriginalKeyword = Key.Trim().Replace(" ", "").ToUpper();

@@ -6,8 +6,8 @@ namespace ciphers.Controllers;
 public class VigenereController : Controller
 {
 
-    [BindProperty]
-    public Vigenere cipheredVigenere { get; set; } = default!;
+    //[BindProperty]
+    //public Vigenere cipheredVigenere { get; set; } = default!;
 
     [HttpGet]
     public IActionResult Cipher()
@@ -18,16 +18,23 @@ public class VigenereController : Controller
     [HttpPost]
     public IActionResult Cipher( Vigenere vigenere)
     {
-        cipheredVigenere.Key = vigenere.GenerateKey();
-        cipheredVigenere.Ciphertext = vigenere.CipherText(cipheredVigenere.Key);
-    
-        //Console.WriteLine(cipheredVigenere.Ciphertext);
-        ViewData["Ciphertext"] = cipheredVigenere.Ciphertext;
+        if( ModelState.IsValid )
+        {
+            vigenere.Key = vigenere.GenerateKey();
+            vigenere.Ciphertext = vigenere.CipherText(vigenere.Key);
+        
+            //Console.WriteLine(cipheredVigenere.Ciphertext);
+            @ViewBag.Ciphertext = vigenere.Ciphertext;
+            //ViewData["Ciphertext"]
 
-        return View(cipheredVigenere);
+            return View(vigenere);
+        }
+
+        return View();
+        
     }
 
-
+    [HttpGet]
     public IActionResult Decipher()
     {
         return View();
@@ -36,14 +43,20 @@ public class VigenereController : Controller
     [HttpPost]
     public IActionResult Decipher(Vigenere vigenere)
     {
-        vigenere.Key = vigenere.GenerateKeyForDecrypt();
-        cipheredVigenere.Plaintext = vigenere.OriginalText();
+         if( ModelState.IsValid )
+        {
+            vigenere.Key = vigenere.GenerateKeyForDecrypt();
+            vigenere.Plaintext = vigenere.OriginalText();
 
-        Console.WriteLine(cipheredVigenere.Plaintext);
+            //Console.WriteLine(vigenere.Plaintext);
 
-        ViewData["Plaintext"] = cipheredVigenere.Plaintext;
-        
-        return View(cipheredVigenere);
+            @ViewBag.Plaintext = vigenere.Plaintext;
+            //ViewData["Plaintext"]
+            
+            return View(vigenere);
+        }
+
+        return View();
     }
 
 }
