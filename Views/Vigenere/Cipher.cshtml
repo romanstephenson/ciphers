@@ -1,4 +1,4 @@
-@model Vigenere;
+@model VigenereCipher;
 
 @{
     ViewData["Title"] = "Vigenere Home";
@@ -14,13 +14,13 @@
     <div class="form-group">
         <label class="control-label" for="Keyword">Keyword:</label>
         @Html.TextBoxFor(m => m.Keyword, new { Class = "form-control"})
-        <span class="text-danger"></span>
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.Keyword)</span>
     </div>
     <br>
     <div class="form-group">
         <label class="control-label" for="Plaintext">Plaintext:</label>
-        @Html.TextBoxFor(m => m.Plaintext, new { Class = "form-control"})
-        <span class="text-danger"></span>
+        @Html.TextBoxFor(m => m.Plaintext, new { Class = "form-control"})    
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.Plaintext)</span>    
     </div>
     <br>
     <div class="form-group">

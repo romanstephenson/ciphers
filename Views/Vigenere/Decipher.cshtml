@@ -1,9 +1,9 @@
-@model Vigenere;
+@model VigenereDecipher;
 
 @{
     ViewData["Title"] = "Decipher Vigenere";
 }
-
+ 
 <div class="text-center">
     <h1 class="display-4">Vigenere Decipher</h1>
     <p>You can enter the key and text below to be encrypted.</a>.</p>
@@ -14,13 +14,13 @@
     <div class="form-group">
         <label class="control-label" for="Keyword">Keyword:</label>
         @Html.TextBoxFor(m => m.Keyword, new { Class = "form-control"})
-        <span class="text-danger"></span>
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.Keyword)</span>
     </div>
     <br>
     <div class="form-group">
         <label class="control-label" for="Ciphertext">CipherText:</label>
         @Html.TextBoxFor(m => m.Ciphertext, new { Class = "form-control"})
-        <span class="text-danger"></span>
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.Ciphertext)</span>
     </div>
     <br>
     <div class="form-group">
