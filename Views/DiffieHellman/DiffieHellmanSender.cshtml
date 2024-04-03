@@ -1,0 +1,48 @@
+@model DiffieHellman;
+
+@{
+    ViewData["Title"] = "DiffieHellman Sender";
+}
+
+<div class="text-center">
+    <h1 class="display-4">DiffieHellman Sender</h1>
+    <p>Please enter your chosen prime number and private key below:</a></p>
+</div>
+
+@using (Html.BeginForm("DiffieHellmanSender", "DiffieHellman", FormMethod.Post))
+{
+    <div class="form-group">
+        <label class="control-label" for="SenderPrimeNumber">Prime Number:</label>
+        @Html.TextBoxFor(m => m.SenderPrimeNumber, new { Class = "form-control"})
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.SenderPrimeNumber)</span>
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="control-label" for="SenderPrivateKey">Private Key:</label>
+        @Html.TextBoxFor(m => m.SenderPrivateKey, new { Class = "form-control"})    
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.SenderPrivateKey)</span>    
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="control-label" for="ReceiverPrimitiveRootofSender">Receiver Primitive Root:</label>
+        @Html.TextBoxFor(m => m.ReceiverPrimitiveRootofSender, new { Class = "form-control"})    
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.ReceiverPrimitiveRootofSender)</span>    
+    </div>
+    <br>
+    <div class="form-group">
+        <input type="submit" value="Generate" class="btn btn-primary" />
+    </div> 
+}
+
+<br>
+<div class="form-group">
+    @if(@ViewBag.SenderSecretKey is null)
+    {
+        <input class="form-control" type="text" value="DiffieHellman secret key will be shown here" disabled>
+    }
+    else
+    {   <label class="control-label" for="ReceiverPrimitiveRootofSender">Sender Secret Key:</label>
+        <input class="form-control" type="text" value="@ViewBag.SenderSecretKey" disabled>
+    }
+</div>
+

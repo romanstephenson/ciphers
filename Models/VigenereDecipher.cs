@@ -31,8 +31,6 @@ public class VigenereDecipher
     This function takes the keyword and ciphertext, creates the key to be same length as ciphertext.
     It does this by looping based on the length of the ciphertext and adding a value from the keyword
     to the key in order until the length is the same as the ciphertext.
-    //WHITEWHITEWHITEWHITEWHI
-    //ZPDXVPAZHSLZBHIWZBKMZNM
     */
     public void CreateKeyForDecrypt()
     {
@@ -67,7 +65,6 @@ public class VigenereDecipher
                 /*For each iteration we check if the length of keyword is the same length as plaintext, if it is we break and we no longer need to proceed with key building.*/
                 if (KeywordWithoutSpace.Length == CipherTextWithoutSpace.Length)
                     break;
-
 
                 KeywordWithoutSpace += KeywordWithoutSpace[i] ;
             }

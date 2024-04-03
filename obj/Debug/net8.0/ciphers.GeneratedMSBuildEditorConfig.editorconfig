@@ -26,6 +26,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\steph\Documents\Dev\ciphers
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/steph/Documents/Dev/ciphers/Views/DiffieHellman/DiffieHellmanReceiver.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlmZmllSGVsbG1hblxEaWZmaWVIZWxsbWFuUmVjZWl2ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/steph/Documents/Dev/ciphers/Views/DiffieHellman/DiffieHellmanSender.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlmZmllSGVsbG1hblxEaWZmaWVIZWxsbWFuU2VuZGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/steph/Documents/Dev/ciphers/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -42,12 +50,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/steph/Documents/Dev/ciphers/Views/Vigenere/Cipher.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlnZW5lcmVcQ2lwaGVyLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/steph/Documents/Dev/ciphers/Views/Vigenere/Decipher.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlnZW5lcmVcRGVjaXBoZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/steph/Documents/Dev/ciphers/Views/Vigenere/Encipher.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlnZW5lcmVcRW5jaXBoZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/steph/Documents/Dev/ciphers/Views/_ViewImports.cshtml]

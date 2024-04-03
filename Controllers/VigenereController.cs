@@ -13,7 +13,7 @@ public class VigenereController : Controller
     The controller gets a request once the user clicks the view with name Cipher, a GET request is posted and it simply returns the page with the form for the user to fill in
     */
     [HttpGet]
-    public IActionResult Cipher()
+    public IActionResult Encipher()
     {
         return View();
     }
@@ -28,7 +28,7 @@ public class VigenereController : Controller
     Once complete, the ciphertext is assigned the attribute in the Vigenere class, as is the key based on keyword and we return a instance of Vigenere model back to the view for use in display
     */
     [HttpPost]
-    public IActionResult Cipher( VigenereCipher vigenere)
+    public IActionResult Encipher( VigenereEncipher vigenere)
     {
         if( ModelState.IsValid )
         {

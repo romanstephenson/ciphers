@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ciphers.Models;
 
-public class VigenereCipher
+public class VigenereEncipher
 {
     /*This attribute holds the key generated based on the keyword*/
     public string? Key { get; set; }
@@ -66,11 +66,8 @@ public class VigenereCipher
                 if (KeywordWithoutSpace.Length == PlaintextWithoutSpace.Length)
                     break;
 
-                //Console.WriteLine(KeywordWithoutSpace[i]);
-
                 /*For each iteration in the loop, we add the next value from the keyword to the key.*/
                 KeywordWithoutSpace += KeywordWithoutSpace[i] ;
-                //Console.WriteLine(KeywordWithoutSpace);
             }
 
             Key = KeywordWithoutSpace;
@@ -98,19 +95,12 @@ public class VigenereCipher
             {
                 // converting in range 0-25 (count of 26 since there are 26 characters in the alphabet we are using)
                 int x = ( PlaintextWithoutSpace[ i ] + Key[ i ] ) % 26;
-                // Console.WriteLine(i);
-                // Console.WriteLine(PlaintextWithoutSpace[ i ]);
-                // Console.WriteLine(Key[ i ]);
-                // Console.WriteLine(x);
         
                 /*in ascii alphabet each character is given a integer representation so we get that integer value*/
                 x += 'A';
-                //Console.WriteLine(x);
         
                 /*ensure the integer value is converted to the upper case representation in the aplhabet and append the character to the ciphertext string we are building. This will assign the value to the attribute of the instance of VigenereCipher which we can access in the controller*/
                 Ciphertext += ( char )( x );
-                //Console.WriteLine("This is char x" + ( char )( x ));
-                //Console.WriteLine(Ciphertext);
             }
         }
     }

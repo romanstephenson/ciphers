@@ -1,15 +1,15 @@
-@model VigenereCipher;
+@model VigenereEncipher;
 
 @{
     ViewData["Title"] = "Vigenere Home";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Vigenere Cipher</h1>
+    <h1 class="display-4">Vigenere EnCipher</h1>
     <p>You can enter the key and text below to be encrypted.</a>.</p>
 </div>
 
-@using (Html.BeginForm("Cipher","Vigenere",FormMethod.Post))
+@using (Html.BeginForm("Encipher","Vigenere",FormMethod.Post))
 {
     <div class="form-group">
         <label class="control-label" for="Keyword">Keyword:</label>
