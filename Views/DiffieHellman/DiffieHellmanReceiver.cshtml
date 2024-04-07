@@ -1,42 +1,63 @@
 @model DiffieHellman;
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "DiffieHellman Receiver";
+    
+    var SenderPrimitiveRoot = HttpContextAccessor.HttpContext.Session.GetString("DiffieSenderPrimitiveRoot");
 }
 
 <div class="text-center">
     <h1 class="display-4">DiffieHellman Receiver</h1>
-    <p>You can enter the key and text below to be encrypted.</a>.</p>
+    <p>You can enter the key and text below to be encrypted</a>.</p>
 </div>
 
 @using (Html.BeginForm("DiffieHellmanReceiver", "DiffieHellman", FormMethod.Post))
 {
     <div class="form-group">
-        <label class="control-label" for="Keyword">Keyword:</label>
-        @* @Html.TextBoxFor(m => m.Keyword, new { Class = "form-control"})
-        <span class="text-danger">@Html.ValidationMessageFor(m => m.Keyword)</span> *@
+        <label class="control-label" for="ReceiverPrimeNumber">Prime Number:</label>
+        @Html.TextBoxFor(m => m.ReceiverPrimeNumber, new { Class = "form-control"})
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.ReceiverPrimeNumber)</span>
     </div>
     <br>
     <div class="form-group">
-        <label class="control-label" for="Plaintext">Plaintext:</label>
-        @* @Html.TextBoxFor(m => m.Plaintext, new { Class = "form-control"})    
-        <span class="text-danger">@Html.ValidationMessageFor(m => m.Plaintext)</span>     *@
+        <label class="control-label" for="ReceiverPrivateKey">Private Key:</label>
+        @Html.TextBoxFor(m => m.ReceiverPrivateKey, new { Class = "form-control"})    
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.ReceiverPrivateKey)</span>    
     </div>
     <br>
     <div class="form-group">
-        <input type="submit" value="Encrypt" class="btn btn-primary" />
+        <label class="control-label" for="SenderPrimitiveRoot">Primitive Root:</label>
+        @* @Html.TextBoxFor(m => m.SenderPrimitiveRoot, new { Class = "form-control"})     *@
+        <input class="form-control" type="text" value="@SenderPrimitiveRoot" disabled>
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.SenderPrimitiveRoot)</span>    
+    </div>
+    <br>
+    <div class="form-group">
+        <input type="submit" value="Generate" class="btn btn-primary" />
     </div> 
 }
-
 <br>
 <div class="form-group">
-    @if(@ViewBag.Ciphertext == "")
+    @if(@ViewBag.ReceiverPublicKey is null)
     {
-        <input class="form-control" type="text" value="Ciphere Text Will Appear Here" disabled>
+        <input class="form-control" type="text" value="DiffieHellman public key will be shown here" disabled>
     }
     else
-    {
-        <input class="form-control" type="text" value="@ViewBag.Ciphertext" disabled>
+    {   
+        <label class="control-label" for="ReceiverPublicKey">ReceiverPublicKey :</label>
+        <input class="form-control" type="text" value="@ViewBag.ReceiverPublicKey" disabled>
     }
 </div>
-
+<br>
+@* <div class="form-group">
+    @if(@ViewBag.ReceiverSecretKey is null)
+    {
+        <input class="form-control" type="text" value="DiffieHellman secret key will be shown here" disabled>
+    }
+    else
+    {   
+        <input class="form-control" type="text" value="@ViewBag.ReceiverSecretKey" disabled>
+    }
+</div>
+  *@

@@ -1,0 +1,49 @@
+@model Rsa;
+
+@{
+    ViewData["Title"] = "Rsa Exchange";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Rsa Exchange</h1>
+    <p>Hit Generate to create a set of public and private keys:</a></p>
+</div>
+
+
+@using(Html.BeginForm("RsaExchange","Rsa",FormMethod.Post))
+{
+      @if(@ViewBag.SenderRsaPublicKey is null || @ViewBag.SenderRsaPrivateKey is null)
+    {
+        <input class="form-control" type="text" value="Sender Rsa Public key will be shown here" disabled>
+        <br>
+        <input class="form-control" type="text" value="Sender Rsa Private key will be shown here" disabled>
+    }
+    else
+    {   
+        <label class="control-label" for="RsaPublicKey">Sender Rsa Public Key:</label>
+        <input class="form-control" type="text" value="@ViewBag.SenderRsaPublicKey, @ViewBag.N" disabled>
+        <br>
+        <label class="control-label" for="RsaPrivateKey">Sender Rsa Private Key:</label>
+        <input class="form-control" type="text" value="@ViewBag.SenderRsaPrivateKey, @ViewBag.N" disabled>
+    }
+    <br>
+    @if(@ViewBag.RecieverRsaPublicKey is null || @ViewBag.RecieverRsaPrivateKey is null)
+    {
+        <input class="form-control" type="text" value="Reciever Rsa Public Key will be shown here" disabled>
+        <br>
+        <input class="form-control" type="text" value="Reciever Rsa Private Key will be shown here" disabled>
+    }
+    else
+    {   
+        <label class="control-label" for="RsaPublicKey">Reciever Rsa Public Key:</label>
+        <input class="form-control" type="text" value="@ViewBag.RecieverRsaPublicKey, @ViewBag.N" disabled>
+        <br>
+        <label class="control-label" for="RsaPrivateKey">Reciever Rsa Private Key:</label>
+        <input class="form-control" type="text" value="@ViewBag.RecieverRsaPrivateKey, @ViewBag.N" disabled>
+    }
+    <br>
+    <div class="form-group">
+        <input type="submit" value="Generate" class="btn btn-primary" />
+    </div> 
+}
+

@@ -26,6 +26,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\steph\Documents\Dev\ciphers
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/steph/Documents/Dev/ciphers/Views/DiffieHellman/DiffieHellmanExchange.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlmZmllSGVsbG1hblxEaWZmaWVIZWxsbWFuRXhjaGFuZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/steph/Documents/Dev/ciphers/Views/DiffieHellman/DiffieHellmanReceiver.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlmZmllSGVsbG1hblxEaWZmaWVIZWxsbWFuUmVjZWl2ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -40,6 +44,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/steph/Documents/Dev/ciphers/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/steph/Documents/Dev/ciphers/Views/Rsa/RsaExchange.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUnNhXFJzYUV4Y2hhbmdlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/steph/Documents/Dev/ciphers/Views/Shared/Error.cshtml]

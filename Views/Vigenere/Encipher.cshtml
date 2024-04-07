@@ -5,8 +5,8 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Vigenere EnCipher</h1>
-    <p>You can enter the key and text below to be encrypted.</a>.</p>
+    <h1 class="display-4">Vigenere Encipher</h1>
+    <p>You can enter the key and text below to be encrypted</a>.</p>
 </div>
 
 @using (Html.BeginForm("Encipher","Vigenere",FormMethod.Post))
@@ -30,9 +30,9 @@
 
 <br>
 <div class="form-group">
-    @if(@ViewBag.Ciphertext == "")
+    @if(@ViewBag.Ciphertext is null)
     {
-        <input class="form-control" type="text" value="Ciphere Text Will Appear Here" disabled>
+        <input class="form-control" type="text" value="Cipher Text Will Appear Here" disabled>
     }
     else
     {
