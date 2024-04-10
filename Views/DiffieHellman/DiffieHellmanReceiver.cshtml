@@ -5,11 +5,13 @@
     ViewData["Title"] = "DiffieHellman Receiver";
     
     var SenderPrimitiveRoot = HttpContextAccessor.HttpContext.Session.GetString("DiffieSenderPrimitiveRoot");
+    var SenderPrimeNumber = HttpContextAccessor.HttpContext.Session.GetString("DiffieSenderPrimeNumber");
+    var SenderPublicKey = HttpContextAccessor.HttpContext.Session.GetString("DiffieSenderPublicKey");
 }
 
 <div class="text-center">
     <h1 class="display-4">DiffieHellman Receiver</h1>
-    <p>You can enter the key and text below to be encrypted</a>.</p>
+    <p>Enter details below to generate public key</a>.</p>
 </div>
 
 @using (Html.BeginForm("DiffieHellmanReceiver", "DiffieHellman", FormMethod.Post))
@@ -31,6 +33,20 @@
         @* @Html.TextBoxFor(m => m.SenderPrimitiveRoot, new { Class = "form-control"})     *@
         <input class="form-control" type="text" value="@SenderPrimitiveRoot" disabled>
         <span class="text-danger">@Html.ValidationMessageFor(m => m.SenderPrimitiveRoot)</span>    
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="control-label" for="SenderPrimeNumber">Sender Prime Number:</label>
+        @* @Html.TextBoxFor(m => m.SenderPrimitiveRoot, new { Class = "form-control"})     *@
+        <input class="form-control" type="text" value="@SenderPrimeNumber" disabled>
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.SenderPrimeNumber)</span>    
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="control-label" for="SenderPublicKey">Sender Public Key:</label>
+        @* @Html.TextBoxFor(m => m.SenderPrimitiveRoot, new { Class = "form-control"})     *@
+        <input class="form-control" type="text" value="@SenderPublicKey" disabled>
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.SenderPublicKey)</span>    
     </div>
     <br>
     <div class="form-group">

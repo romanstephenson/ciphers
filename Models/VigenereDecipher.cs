@@ -1,4 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ciphers.Models;
 
@@ -8,20 +11,25 @@ public class VigenereDecipher
     public string? Key { get; set; }
 
     /*This attribute will hold the plaintext value entered by the user or generated based on ciphertext*/
-    //[Required]
-    //[StringLength(1, ErrorMessage = "Plaintext must be greater than 1")]
     public string? Plaintext { get; set; }
 
 
     /*This attribute will hold the keyword entered by the user*/
     [Required]
-    //[StringLength(1, ErrorMessage = "Keyword must be greater than 1")]
     public string? Keyword { get; set; }
 
     /*This attribute will hold the ciphertext that is either entered by the user or generated based on plaintext*/
-    [Required]
-    //[StringLength(1, ErrorMessage = "Ciphertext must be greater than 1")]
     public string? Ciphertext { get; set; }
+
+
+    public int RsaPublicKey { get; set; }
+
+    public int DiffieHellmanPublicKey { get; set; }
+
+    public string? Signature { get; set; }
+
+    [Required]
+    public string? RsaSignature { get; set; }
 
     /*This attribute holds any error that may be encountered during processing.*/
     public string? Error { get; set; }
@@ -74,6 +82,36 @@ public class VigenereDecipher
     }
     
     
+    public void GetMD5Hash()
+    {
+        MD5 Md5Hasher = MD5.Create();
+
+        byte[] data = Md5Hasher.ComputeHash(Encoding.Default.GetBytes(Ciphertext));
+        
+        // Create a new Stringbuilder to collect the bytes and create a string.
+        StringBuilder sBuilder = new StringBuilder();
+
+        // Loop through each byte of the hashed data and format each one as a hexadecimal string.
+        for (int i = 0; i < data.Length; i++)
+        {
+            sBuilder.Append(data[i].ToString("x2"));
+        }
+
+        // Return the hexadecimal string.
+        Signature = sBuilder.ToString();
+        
+    }
+
+    public bool VerifyMD5Signature(string hash, string signature)
+    {
+        if( 0 == Comparer.Default.Compare(hash, signature) )
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     /*This function decrypts the encrypted text and returns the original plain text*/
     public void CreatePlainText()
     { 

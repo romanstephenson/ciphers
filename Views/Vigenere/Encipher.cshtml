@@ -1,11 +1,18 @@
 @model VigenereEncipher;
-
+@inject IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = "Vigenere Home";
-}
+    
+    var SenderRsaPrivateKey1 = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaPrivateKeyPart1");
+    var SenderRsaPrivateKey2 = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaPrivateKeyPart2");
 
+    var RsaSignedMessage = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaSignedMessage");
+
+
+    var SenderSignature = HttpContextAccessor.HttpContext.Session.GetString("SenderSignature");
+}
 <div class="text-center">
-    <h1 class="display-4">Vigenere Encipher</h1>
+    <h5 class="display-6">Vigenere Encipher</h5>
     <p>You can enter the key and text below to be encrypted</a>.</p>
 </div>
 
@@ -24,6 +31,29 @@
     </div>
     <br>
     <div class="form-group">
+        <label class="control-label" for="DiffieHellmanPublicKey">DiffieHellman Public Key:</label>
+        @Html.TextBoxFor(m => m.DiffieHellmanPublicKey, new { Class = "form-control"})
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.DiffieHellmanPublicKey)</span>
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="control-label" for="RsaPrivateKey">Rsa Private Key:</label>
+        <input class="form-control" type="text" value="@SenderRsaPrivateKey1,@SenderRsaPrivateKey2" disabled>   
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.RsaPrivateKey)</span>    
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="control-label" for="Signature">MD5 Hash of Encrypted Message:</label>
+        <input class="form-control" type="text" value="@SenderSignature" disabled>   
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.Signature)</span> 
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="control-label" for="">Rsa Sign of Ciphertext:</label>
+        <textarea class="form-control" disabled>@RsaSignedMessage</textarea>    
+    </div>
+    <br>
+    <div class="form-group">
         <input type="submit" value="Encrypt" class="btn btn-primary" />
     </div> 
 }
@@ -36,6 +66,7 @@
     }
     else
     {
+        <label class="control-label" for="Ciphertext">Vigenere Ciphertext:</label>
         <input class="form-control" type="text" value="@ViewBag.Ciphertext" disabled>
     }
 </div>

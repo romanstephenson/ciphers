@@ -1,0 +1,40 @@
+@model Rsa;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Rsa Receiver";
+
+    var SenderRsaPublicKeyPart1 = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaPublicKeyPart1");
+    var SenderRsaPublicKeyPart2 = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaPublicKeyPart2");
+}
+
+<div class="text-center">
+    <h1 class="display-4">Rsa Receiver</h1>
+    <p>Hit Generate to create a set of public and private keys for Receiver. You will see the Receivers public key and this will also make your public available to the Receiver via current session:</a></p>
+</div>
+
+
+@using(Html.BeginForm("RsaReceiver", "Rsa", FormMethod.Post))
+{
+      @if(@ViewBag.ReceiverRsaPublicKey is null || @ViewBag.ReceiverRsaPrivateKey is null)
+    {
+        <input class="form-control" type="text" value="Receiver Rsa Public key will be shown here" disabled>
+        <br>
+        <input class="form-control" type="text" value="Receiver Rsa Private key will be shown here" disabled>
+    }
+    else
+    {   
+         <label class="control-label" for="RsaPublicKey">Sender Rsa Public Key:</label>
+        <input class="form-control" type="text" value="@SenderRsaPublicKeyPart1,@SenderRsaPublicKeyPart2" disabled>
+        <br>
+        <label class="control-label" for="RsaPublicKey">Receiver Rsa Public Key:</label>
+        <input class="form-control" type="text" value="@ViewBag.ReceiverRsaPublicKey, @ViewBag.N" disabled>
+        <br>
+        <label class="control-label" for="RsaPrivateKey">Receiver Rsa Private Key:</label>
+        <input class="form-control" type="text" value="@ViewBag.ReceiverRsaPrivateKey, @ViewBag.N" disabled>
+    }
+    <br>
+    <div class="form-group">
+        <input type="submit" value="Generate" class="btn btn-primary" />
+    </div> 
+}
+

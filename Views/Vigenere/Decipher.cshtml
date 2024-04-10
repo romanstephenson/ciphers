@@ -1,12 +1,14 @@
 @model VigenereDecipher;
-
+@inject IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = "Decipher Vigenere";
+
+    var ReceiverRsaPrivateKey = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaPublicKeyPart1");
 }
  
 <div class="text-center">
     <h1 class="display-4">Vigenere Decipher</h1>
-    <p>You can enter the key and text below to be decrypted</a>.</p>
+    <p>Enter the keyword, CipherText and Rsa Sign:</a></p>
 </div>
 
 @using (Html.BeginForm("Decipher","Vigenere",FormMethod.Post))
@@ -19,8 +21,35 @@
     <br>
     <div class="form-group">
         <label class="control-label" for="Ciphertext">CipherText:</label>
-        @Html.TextBoxFor(m => m.Ciphertext, new { Class = "form-control"})
+         @if(@ViewBag.Ciphertext is null)
+        {
+            <input class="form-control" type="text" value="Once your rsa sign is correct, this will be updated with ciphertext" disabled> 
+        }
+        else
+        {
+            <input class="form-control" type="text" value="@ViewBag.Ciphertext " disabled> 
+        }
+        
+        @* @Html.TextBoxFor(m => m.Ciphertext, new { Class = "form-control"}) *@
         <span class="text-danger">@Html.ValidationMessageFor(m => m.Ciphertext)</span>
+    </div>
+    <br>
+    @* <div class="form-group">
+        <label class="control-label" for="DiffieHellmanPublicKey">DiffieHellman Public Key:</label>
+        @Html.TextBoxFor(m => m.DiffieHellmanPublicKey, new { Class = "form-control"})
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.DiffieHellmanPublicKey)</span>
+    </div>
+    <br> *@
+    <div class="form-group">
+        <label class="control-label" for="RsaPublicKey">Sender Rsa Public Key:</label>
+        <input class="form-control" type="text" value="@ReceiverRsaPrivateKey" disabled>   
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.RsaPublicKey)</span>    
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="control-label" for="RsaSignature">Rsa Sign of Ciphertext:</label>
+        @Html.TextAreaFor(m => m.RsaSignature, new { Class = "form-control"})
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.RsaSignature) </span>
     </div>
     <br>
     <div class="form-group">
@@ -30,13 +59,21 @@
 
 <br>
 <div class="form-group">
-     @if(@ViewBag.Plaintext is null)
+    @if(@ViewBag.RsaSignMismatch is null)
     {
-        <input class="form-control" type="text" value="Plaintext Will Appear Here" disabled>
+         @if(@ViewBag.Plaintext is null)
+        {
+            <input class="form-control" type="text" value="Plaintext Will Appear Here" disabled>
+        }
+        else
+        {
+            <input class="form-control" type="text" value="@ViewBag.Plaintext" disabled>
+        }
     }
     else
     {
-        <input class="form-control" type="text" value="@ViewBag.Plaintext" disabled>
+        <input class="form-control" type="text" value="@ViewBag.RsaSignMismatch" disabled>
     }
+
 </div>
 

@@ -2,35 +2,16 @@ namespace ciphers.Models;
 
 public class Rsa
 {
-    public static HashSet<int> prime = new HashSet<int>();
-    public int RsaPublicKey;
-    public int RsaPrivateKey;
-    public int n;
-    private Random random = new Random();
+    public HashSet<long> PrimeNumberHolder = [];
+    public long RsaPublicKey { get; set; }
+    public long RsaPrivateKey { get; set; }
+    public long n { get; set; }
+    private readonly Random random = new();
  
-    // public static void Main()
-    // {
-    //     PrimeFiller();
-    //     GenerateRsaKeys();
-    //     string message = "Test Message";
-    //     // Uncomment below for manual input
-    //     // Console.WriteLine("Enter the message:");
-    //     // message = Console.ReadLine();
- 
-    //     List<int> coded = Encoder(message);
- 
-    //     Console.WriteLine("Initial message:");
-    //     Console.WriteLine(message);
-    //     Console.WriteLine("\n\nThe encoded message (encrypted by public key)\n");
-    //     Console.WriteLine(string.Join("", coded));
-    //     Console.WriteLine("\n\nThe decoded message (decrypted by public key)\n");
-    //     Console.WriteLine(Decoder(coded));
-    // }
- 
-    public void PrimeFiller()
+    public void GenerateAndPopulatePrimeNumbers()
     {
-        bool[] sieve = new bool[2048];
-        for (int i = 0; i < 2048; i++)
+        bool[] sieve = new bool[250];
+        for (int i = 0; i < 250; i++)
         {
             sieve[i] = true;
         }
@@ -38,9 +19,9 @@ public class Rsa
         sieve[0] = false;
         sieve[1] = false;
  
-        for (int i = 2; i < 2048; i++)
+        for (int i = 2; i < 250; i++)
         {
-            for (int j = i * 2; j < 2048; j += i)
+            for (int j = i * 2; j < 250; j += i)
             {
                 sieve[j] = false;
 
@@ -52,68 +33,139 @@ public class Rsa
         {
             if (sieve[i])
             {
-                prime.Add(i);
+                PrimeNumberHolder.Add(i);
 
                 //Console.WriteLine(i);
             }
         }
     }
  
-    public int CreateRandomPrimeNumber()
+    public long CreateRandomPrimeNumber()
     {
-        int k = random.Next(0, prime.Count - 1);
+        long CurrentPrime = random.Next(0, PrimeNumberHolder.Count - 1);
         
-        var enumerator = prime.GetEnumerator();
+        var enumerator = PrimeNumberHolder.GetEnumerator();
 
-        for (int i = 0; i <= k; i++)
+        for (long i = 0; i <= CurrentPrime; i++)
         {
             enumerator.MoveNext();
         }
  
-        int ret = enumerator.Current;
-        prime.Remove(ret);
+        long ret = enumerator.Current;
+
+        PrimeNumberHolder.Remove(ret);
+        
         return ret;
     }
  
     public void GenerateRsaKeys()
     {
-        int prime1 = CreateRandomPrimeNumber();
-        int prime2 = CreateRandomPrimeNumber();
+        long PrimeNumber1 = CreateRandomPrimeNumber();
+        long PrimeNumber2 = CreateRandomPrimeNumber();
  
-        n = prime1 * prime2;
-        int fi = (prime1 - 1) * (prime2 - 1);
+        n = PrimeNumber1 * PrimeNumber2;
+        long fi = (PrimeNumber1 - 1) * (PrimeNumber2 - 1);
  
-        int e = 2;
+        long encrypt = 2;
         while (true)
         {
-            if (GCD(e, fi) == 1)
+            if (CalculateGreatestCommonDivisor(encrypt, fi) == 1)
             {
                 break;
             }
-            e += 1;
+            encrypt += 1;
         }
  
-        RsaPublicKey = e;
+        RsaPublicKey = encrypt;
  
-        int d = 2;
+        long decrypt = 2;
         while (true)
         {
-            if ((d * e) % fi == 1)
+            if ((decrypt * encrypt) % fi == 1)
             {
                 break;
             }
-            d += 1;
+            decrypt += 1;
         }
  
-        RsaPrivateKey = d;
+        RsaPrivateKey = decrypt;
     }
     
-    public int GCD(int a, int b)
+    public long CalculateGreatestCommonDivisor(long a, long b)
     {
         if (b == 0)
         {
             return a;
         }
-        return GCD(b, a % b);
+        return CalculateGreatestCommonDivisor(b, a % b);
     }
+
+    public List<long> RsaLetterEncoder(string message)
+    {
+        List<long> EncodedMessage = new List<long>();
+
+        //Console.WriteLine(message);
+
+        foreach(char letter in message)
+        {
+           // Console.WriteLine((int)letter);
+            EncodedMessage.Add(RsaEncrypter( (long) letter ));
+        }
+        //Console.WriteLine(EncodedMessage);
+        return EncodedMessage;
+    }
+
+    public long RsaEncrypter(long EncodedMessage)
+    {
+        long PrivateKey = RsaPrivateKey;
+
+        //Console.WriteLine("inside the rsa encrypter:" + EncodedMessage);
+        //Console.WriteLine("inside the rsa encrypter:" + PrivateKey);
+        long EncryptedMessage = 1;
+
+        while(PrivateKey > 0)
+        {
+            //Console.WriteLine("PrivateKey:" + PrivateKey);
+            EncryptedMessage *= EncodedMessage;
+            //Console.WriteLine("inside the rsa encrypter:" + EncryptedMessage + " and " + EncodedMessage);
+            //Console.WriteLine(n);
+            EncryptedMessage %= n;
+            //Console.WriteLine(EncryptedMessage);
+            PrivateKey -= 1;
+
+        }
+
+        return EncryptedMessage;
+    }
+
+    public string RsaLetterDecoder(List<long> EncodedMessage)
+    {
+        string DecodedMessage = "";
+
+        foreach(long number in EncodedMessage)
+        {
+            DecodedMessage += (char) RsaDecrypter(number);
+        }
+
+        return DecodedMessage;
+    }
+
+    public long RsaDecrypter(long EncryptedMessage)
+    {
+        long PublicKey = RsaPublicKey;
+
+        long DecryptedMessage = 1;
+
+        while(PublicKey > 0)
+        {
+            DecryptedMessage *= EncryptedMessage;
+            DecryptedMessage %= n;
+
+            PublicKey -= 1;
+        }
+
+        return DecryptedMessage;
+
+    }
+
 }
