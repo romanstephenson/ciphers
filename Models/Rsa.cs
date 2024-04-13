@@ -10,28 +10,29 @@ public class Rsa
  
     public void GenerateAndPopulatePrimeNumbers()
     {
-        bool[] sieve = new bool[250];
+        bool[] Decide = new bool[250];
+        
         for (int i = 0; i < 250; i++)
         {
-            sieve[i] = true;
+            Decide[i] = true;
         }
  
-        sieve[0] = false;
-        sieve[1] = false;
+        Decide[0] = false;
+        Decide[1] = false;
  
         for (int i = 2; i < 250; i++)
         {
             for (int j = i * 2; j < 250; j += i)
             {
-                sieve[j] = false;
+                Decide[j] = false;
 
                 //Console.WriteLine( j);
             }
         }
  
-        for (int i = 0; i < sieve.Length; i++)
+        for (int i = 0; i < Decide.Length; i++)
         {
-            if (sieve[i])
+            if (Decide[i])
             {
                 PrimeNumberHolder.Add(i);
 
