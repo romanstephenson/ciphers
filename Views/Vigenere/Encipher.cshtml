@@ -3,13 +3,13 @@
 @{
     ViewData["Title"] = "Vigenere Encipher";
     
-    var SenderRsaPrivateKey1 = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaPrivateKeyPart1");
-    var SenderRsaPrivateKey2 = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaPrivateKeyPart2");
+    var SenderRsaPrivateKey1 = HttpContextAccessor.HttpContext?.Session.GetString("SenderRsaPrivateKeyPart1");
+    var SenderRsaPrivateKey2 = HttpContextAccessor.HttpContext?.Session.GetString("SenderRsaPrivateKeyPart2");
 
-    var RsaSignedMessage = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaSignedMessage");
+    var RsaSignedMessage = HttpContextAccessor.HttpContext?.Session.GetString("SenderRsaSignedMessage");
 
 
-    var SenderMd5Hash = HttpContextAccessor.HttpContext.Session.GetString("SenderMd5Hash");
+    var SenderMd5Hash = HttpContextAccessor.HttpContext?.Session.GetString("SenderMd5Hash");
 }
 <div class="text-center">
     <h5 class="display-6">Vigenere Encipher</h5>
@@ -31,9 +31,15 @@
     </div>
     <br>
     <div class="form-group">
-        <label class="control-label" for="DiffieHellmanPublicKey">DiffieHellman Public Key:</label>
-        @Html.TextBoxFor(m => m.DiffieHellmanPublicKey, new { Class = "form-control"})
-        <span class="text-danger">@Html.ValidationMessageFor(m => m.DiffieHellmanPublicKey)</span>
+        <label class="control-label" for="DiffieHellmanSecretKey">DiffieHellman Secret Key:</label>
+        @Html.TextBoxFor(m => m.DiffieHellmanSecretKey, new { Class = "form-control"})
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.DiffieHellmanSecretKey)</span>
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="control-label" for="AssociatedKey">AssociatedKey:</label>
+        @Html.TextBoxFor(m => m.AssociatedKey, new { Class = "form-control", @disabled = "disabled"} )
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.AssociatedKey)</span>
     </div>
     <br>
     <div class="form-group">

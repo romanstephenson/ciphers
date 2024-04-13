@@ -5,6 +5,7 @@ namespace ciphers.Models;
 public class DiffieHellman
 {
     /*Sender will choose a prime number*/
+    [Required]
     public long SenderPrimeNumber { get; set; }
 
     /*Sender will also choose a private key value*/
@@ -35,21 +36,20 @@ public class DiffieHellman
     /*Reciever Public Key*/
     public long ReceiverPublicKey { get; set; }
 
+    public long ReceiverPrimitiveRoot { get; set; }
+
     /*
-        takes a and raise it to b then mod by p
-        a being prime number
-        b being private key
-        p being primitive root of a
+        primitive root raised to private key mod primenumber
     */ 
-    public long GenerateKey(long a, long b, long p)
+    public long GenerateKey(long PrimitiveRoot, long PrivateKey, long PrimeNumber)
     {
 
-        if(b == 1)
+        if(PrivateKey == 1)
         {
-            return a;
+            return PrimitiveRoot;
         }
         else{
-            return ((long)Math.Pow(a,b)) % p;
+            return ((long)Math.Pow(PrimitiveRoot,PrivateKey)) % PrimeNumber;
         }
     
     }

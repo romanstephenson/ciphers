@@ -65,24 +65,34 @@ public class DiffieHellmanController : Controller
         if(ModelState.IsValid)
         {
             /*generate public key for sender*/
-            diffieHellman.SenderPublicKey = diffieHellman.GenerateKey(diffieHellman.SenderPrimeNumber,diffieHellman.SenderPrivateKey,diffieHellman.SenderPrimitiveRoot );
+            diffieHellman.SenderPublicKey = diffieHellman.GenerateKey(diffieHellman.SenderPrimitiveRoot,diffieHellman.SenderPrivateKey,diffieHellman.SenderPrimeNumber );
 
             /*generate sender secret key*/
-            diffieHellman.SenderSecretKey = diffieHellman.GenerateKey(diffieHellman.SenderPublicKey,diffieHellman.ReceiverPrivateKey,diffieHellman.SenderPrimitiveRoot);
+            if(diffieHellman.ReceiverPublicKey != 0)
+            {
 
-            /*assign sender public key to session data*/
-            HttpContext.Session.SetString("DiffieSenderPublicKey",diffieHellman.SenderPublicKey.ToString());
+                // Console.WriteLine(diffieHellman.ReceiverPublicKey);
+                // Console.WriteLine(diffieHellman.SenderPublicKey);
+                // Console.WriteLine(diffieHellman.SenderPrimitiveRoot);
 
-            /*assign primitive root to session data*/
-            HttpContext.Session.SetString("DiffieSenderPrimitiveRoot",diffieHellman.SenderPrimitiveRoot.ToString());
+                diffieHellman.SenderSecretKey = diffieHellman.GenerateKey(diffieHellman.ReceiverPublicKey,diffieHellman.SenderPrivateKey,diffieHellman.SenderPrimeNumber);
 
-            /*assign prime number for sender to session data*/
-            HttpContext.Session.SetString("DiffieSenderPrimeNumber", diffieHellman.SenderPrimeNumber.ToString());
+                @ViewBag.SenderSecretKey = diffieHellman.SenderSecretKey;
+
+            }
+            
+            // /*assign sender public key to session data*/
+            // HttpContext.Session.SetString("DiffieSenderPublicKey",diffieHellman.SenderPublicKey.ToString());
+
+            // /*assign primitive root to session data*/
+            // HttpContext.Session.SetString("DiffieSenderPrimitiveRoot",diffieHellman.SenderPrimitiveRoot.ToString());
+
+            // /*assign prime number for sender to session data*/
+            // HttpContext.Session.SetString("DiffieSenderPrimeNumber", diffieHellman.SenderPrimeNumber.ToString());
 
             @ViewBag.SenderPublicKey = diffieHellman.SenderPublicKey;
 
-            @ViewBag.SenderSecretKey = diffieHellman.SenderSecretKey;
-
+            
             return View(diffieHellman);
         }
         return View();
@@ -97,36 +107,36 @@ public class DiffieHellmanController : Controller
     [HttpPost]
     public IActionResult DiffieHellmanReceiver(DiffieHellman diffieHellman)
     {
-        long SenderPrimRoot;
-        long SenderPublicKey;
-        long SenderPrimeNumber;
-
         if(ModelState.IsValid)
         {   
-            /*get primitive root for sender from session and sender public key*/
-            SenderPrimRoot = Convert.ToInt64(HttpContext.Session.GetString("DiffieSenderPrimitiveRoot"));
+            // /*get primitive root for sender from session and sender public key*/
+            // SenderPrimRoot = Convert.ToInt64(HttpContext.Session.GetString("DiffieSenderPrimitiveRoot"));
 
-            /*get sender public key from session data*/
-            SenderPublicKey = Convert.ToInt64(HttpContext.Session.GetString("DiffieSenderPublicKey") );
+            // /*get sender public key from session data*/
+            // SenderPublicKey = Convert.ToInt64(HttpContext.Session.GetString("DiffieSenderPublicKey") );
 
-            /*get sender prime number from session data*/
-            SenderPrimeNumber = Convert.ToInt64(HttpContext.Session.GetString("DiffieSenderPrimeNumber") );
+            // /*get sender prime number from session data*/
+            // SenderPrimeNumber = Convert.ToInt64(HttpContext.Session.GetString("DiffieSenderPrimeNumber") );
 
             /*generate public key for reciever*/
-            diffieHellman.ReceiverPublicKey = diffieHellman.GenerateKey(diffieHellman.ReceiverPrimeNumber,diffieHellman.ReceiverPrivateKey, SenderPrimRoot );
+            diffieHellman.ReceiverPublicKey = diffieHellman.GenerateKey(diffieHellman.ReceiverPrimitiveRoot,diffieHellman.ReceiverPrivateKey, diffieHellman.ReceiverPrimeNumber );
 
-            /*assign reciever public key to session data*/
-            HttpContext.Session.SetString("DiffieRecieverPublicKey",diffieHellman.ReceiverPublicKey.ToString());
+             /*generate sender secret key*/
+            if(diffieHellman.SenderPublicKey != 0)
+            {
 
-            /*assign prime number for sender to session data*/
-            HttpContext.Session.SetString("DiffieRecieverPrimeNumber", diffieHellman.ReceiverPrimeNumber.ToString());
+                // Console.WriteLine("Sender pub" + diffieHellman.SenderPublicKey);
+                // Console.WriteLine("Rec Priv" +diffieHellman.ReceiverPrivateKey);
+                // Console.WriteLine("Rec Prim" +diffieHellman.ReceiverPrimitiveRoot);
 
+                diffieHellman.ReceiverSecretKey = diffieHellman.GenerateKey(diffieHellman.SenderPublicKey,diffieHellman.ReceiverPrivateKey,diffieHellman.ReceiverPrimeNumber);
 
-            /*reciever secret key*/
-            diffieHellman.ReceiverSecretKey = diffieHellman.GenerateKey(SenderPublicKey , diffieHellman.ReceiverPrivateKey, SenderPrimRoot);
+                //Console.WriteLine("Rec Secret:" + diffieHellman.ReceiverSecretKey);
+
+                @ViewBag.ReceiverSecretKey = diffieHellman.ReceiverSecretKey;
+
+            }
             
-
-            @ViewBag.ReceiverSecretKey = diffieHellman.ReceiverSecretKey;
             @ViewBag.ReceiverPublicKey = diffieHellman.ReceiverPublicKey;
 
             return View(diffieHellman);

@@ -37,8 +37,11 @@ public class VigenereController : Controller
             //create key based on keyword
             vigenere.CreateKeyToEncrypt();
 
+            vigenere.AssociateKeyWordAndDiffieSecret();
+            //Console.WriteLine(vigenere.AssociatedKey);
+
             //associate viginere key and diffie public key and assign to sessions
-            HttpContext.Session.SetString( vigenere.Key, vigenere.DiffieHellmanPublicKey.ToString() );
+            // HttpContext.Session.SetString( vigenere.Key, vigenere.DiffieHellmanPublicKey.ToString() );
 
             //create ciphertext using key from above
             vigenere.CreateCipherText();
@@ -50,10 +53,17 @@ public class VigenereController : Controller
             vigenere.RsaPrivateKey = Convert.ToInt32( HttpContext.Session.GetString("SenderRsaPrivateKeyPart1") );
 
             //set ciphertext to session, we are going to send this to receiver
-            HttpContext.Session.SetString( "RawCypterText", vigenere.Ciphertext );
+            if(vigenere.Ciphertext is not null)
+            {
+                HttpContext.Session.SetString( "RawCypterText", vigenere.Ciphertext );
+            }
 
             //set the hash to session, we are going to set this to receiver
-            HttpContext.Session.SetString( "SenderMd5Hash", vigenere.Hash );
+            if(vigenere.Hash is not null)
+            {
+                HttpContext.Session.SetString( "SenderMd5Hash", vigenere.Hash );
+            }
+            
 
             //get rsa private key of sender
             var n = Convert.ToInt32( HttpContext.Session.GetString("SenderRsaPrivateKeyPart2") );
@@ -66,16 +76,23 @@ public class VigenereController : Controller
                 n = n
             };
 
+            List<long> SignedMessage;
+
             //encode and sign md5hash
-            List<long> SignedMessage = SenderSign.RsaLetterEncoder( vigenere.Hash );
+            if(vigenere.Hash is not null)
+            {
+                SignedMessage = SenderSign.RsaLetterEncoder( vigenere.Hash );
 
-            string SignedSerialize = JsonConvert.SerializeObject( SignedMessage );
+                string SignedSerialize = JsonConvert.SerializeObject( SignedMessage );
 
-            HttpContext.Session.SetString( "SignedListRsa", SignedSerialize );
+                HttpContext.Session.SetString( "SignedListRsa", SignedSerialize );
 
-            //assign the rsa sign to session 
-            HttpContext.Session.SetString( "SenderRsaSignedMessage", string.Join("",SignedMessage).ToString());
+                 //assign the rsa sign to session 
+                HttpContext.Session.SetString( "SenderRsaSignedMessage", string.Join("",SignedMessage).ToString());
 
+                
+            }
+            
             @ViewBag.Ciphertext = vigenere.Ciphertext;
 
             return View(vigenere);
@@ -124,11 +141,15 @@ public class VigenereController : Controller
             //vigenere.Ciphertext = HttpContext.Session.GetString( "RawCypterText" );
 
             /*get rsa sign from session that was serialize to maintain list instantiation , then deserialize and compare to what was entered by user, if match then allow further vigenere decrypt and rsa decrypt*/
-            string SignedSerialize = HttpContext.Session.GetString( "SignedListRsa" );
 
-            Console.WriteLine(SignedSerialize);
+            List<long> SignedMessage;
 
-            List<long> SignedMessage = JsonConvert.DeserializeObject<List<long>>(SignedSerialize);
+            string SignedSerialize;
+
+
+            SignedSerialize = HttpContext.Session.GetString( "SignedListRsa" ) ?? "";
+
+            SignedMessage = JsonConvert.DeserializeObject<List<long>>(SignedSerialize);
 
             //assign private key and n for rsa sign to instance of rsa close / model
             Rsa ReceiverSign = new Rsa
@@ -139,13 +160,16 @@ public class VigenereController : Controller
 
             //set decrypted rsa sign which is the md5 hash
             string ExtractedMd5HashFromRsaSign = ReceiverSign.RsaLetterDecoder(SignedMessage);
+            
 
-            Console.WriteLine(ExtractedMd5HashFromRsaSign);
+            // Console.WriteLine(SignedSerialize);
+
+            // Console.WriteLine(ExtractedMd5HashFromRsaSign);
 
             //generate md5 hash based on ciphertext from vigenere
             vigenere.GetMD5Hash();
 
-            Console.WriteLine(vigenere.Hash);
+            //Console.WriteLine(vigenere.Hash);
 
             //check if decrypted rsa signature is the same as sender
             if(vigenere.RsaSignature == string.Join("",SignedMessage).ToString())
@@ -154,10 +178,13 @@ public class VigenereController : Controller
                 if( vigenere.VerifyMD5Signature( vigenere.Hash , ExtractedMd5HashFromRsaSign) )
                 {
 
-                    Console.WriteLine("Md5 Hash Matches");
+                    //Console.WriteLine("Md5 Hash Matches");
 
                     //create key based on keyword
                     vigenere.CreateKeyForDecrypt();
+
+                    vigenere.DeAssociateKeyWordAndDiffieSecret();
+                    Console.WriteLine("Deassociated key ciphertext: " +vigenere.DeAssociatedKey);
                     
                     //assign ciphertext decrypted from rsa sign to view
                     //@ViewBag.Ciphertext = vigenere.Ciphertext;
@@ -167,7 +194,8 @@ public class VigenereController : Controller
 
                     //update user that message is fine
                     @ViewBag.Md5Verify = "Looks good boss, message has not been tampered with";
-                    //ViewData["Plaintext"]
+
+                    @ViewBag.Plaintext = vigenere.Plaintext;
                     
                     return View(vigenere);
 

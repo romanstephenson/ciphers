@@ -10,11 +10,14 @@ public class VigenereDecipher
     /*This attribute holds the key generated based on the keyword*/
     public string? Key { get; set; }
 
+    public string? DeAssociatedKey { get; set; }
+
     /*This attribute will hold the plaintext value entered by the user or generated based on ciphertext*/
     public string? Plaintext { get; set; }
 
 
     /*This attribute will hold the keyword entered by the user*/
+    [Required]
     public string? Keyword { get; set; }
 
     /*This attribute will hold the ciphertext that is either entered by the user or generated based on plaintext*/
@@ -24,8 +27,11 @@ public class VigenereDecipher
 
     public int RsaPublicKey { get; set; }
 
-    [Required]
+    
     public int DiffieHellmanPublicKey { get; set; }
+
+    [Required]
+    public int DiffieHellmanSecretKey { get; set; }
 
     public string? Hash { get; set; }
 
@@ -83,23 +89,52 @@ public class VigenereDecipher
     }
     
     
+    public void DeAssociateKeyWordAndDiffieSecret()
+    {
+        /*
+        1. do a for loop to the length of the key 
+        2. multiply the integer value of each letter in the key by the diffiehelman secret value
+        3. store the result of the multiplication in a list or array
+        4. build a string based on the character represent of each integer in the list or array.
+        */
+        if(Key is not null)
+        {
+            for(int i = 0; i < Key.Length; i++ )
+            {
+                int KeyValueIndex =  ( Key[i] * DiffieHellmanSecretKey - 26 ) % 26;
+
+                KeyValueIndex += 'A';
+
+                DeAssociatedKey += ( char ) KeyValueIndex;
+
+                //Console.WriteLine( "Deassociated key ciphertext: " + DeAssociatedKey);
+            }
+        }
+        
+    }
+
+    
+    
     public void GetMD5Hash()
     {
-        MD5 Md5Hasher = MD5.Create();
-
-        byte[] data = Md5Hasher.ComputeHash(Encoding.Default.GetBytes(Ciphertext));
-        
-        // Create a new Stringbuilder to collect the bytes and create a string.
-        StringBuilder sBuilder = new StringBuilder();
-
-        // Loop through each byte of the hashed data and format each one as a hexadecimal string.
-        for (int i = 0; i < data.Length; i++)
+        if( !string.IsNullOrEmpty(Ciphertext))
         {
-            sBuilder.Append(data[i].ToString("x2"));
-        }
+            MD5 Md5Hasher = MD5.Create();
 
-        // Return the hexadecimal string.
-        Hash = sBuilder.ToString();
+            byte[] data = Md5Hasher.ComputeHash(Encoding.Default.GetBytes(Ciphertext));
+            
+            // Create a new Stringbuilder to collect the bytes and create a string.
+            StringBuilder sBuilder = new StringBuilder();
+
+            // Loop through each byte of the hashed data and format each one as a hexadecimal string.
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+
+            // Return the hexadecimal string.
+            Hash = sBuilder.ToString();
+        }
         
     }
 
@@ -117,12 +152,12 @@ public class VigenereDecipher
     public void CreatePlainText()
     { 
         /*only proceed if the attributes we need are not empty.*/
-        if( Ciphertext is not null && Key is not null)
+        if( Ciphertext is not null && DeAssociatedKey is not null)
         {
             /*First, we get the user entered Ciphertext and remove all leading, trailing and spaces within the text. We also convert to upper case to allow consistent use of upper case
             alphabet across key and Ciphertext*/
             string CipherTextWithoutSpace = Ciphertext.Trim().Replace(" ", "").Replace(".","").ToUpper();
-            string KeywordWithoutSpace = Key.Trim().Replace(" ", "").Replace(".","").ToUpper();
+            string KeywordWithoutSpace = DeAssociatedKey.Trim().Replace(" ", "").Replace(".","").ToUpper();
 
             /*
             Now we know the key and the ciphertext is the same length we need to define a iterator i and loop through until the 
@@ -130,7 +165,7 @@ public class VigenereDecipher
             for (int i = 0 ; i < CipherTextWithoutSpace.Length && i < KeywordWithoutSpace.Length; i++)
             {
                 // converting in range 0-25 (count of 26 since there are 26 characters in the alphabet we are using)
-                int x = ( CipherTextWithoutSpace[i] - KeywordWithoutSpace[i] + 26 ) %26;
+                int x = ( CipherTextWithoutSpace[i] - DeAssociatedKey[i] + 26 ) %26;
         
                 /*in ascii alphabet each character is given a integer representation so we get that integer value*/
                 x += 'A';

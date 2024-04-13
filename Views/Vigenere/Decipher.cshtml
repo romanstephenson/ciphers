@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Decipher Vigenere";
 
-    var ReceiverRsaPrivateKey = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaPublicKeyPart1");
+    var ReceiverRsaPrivateKey = HttpContextAccessor.HttpContext?.Session.GetString("SenderRsaPublicKeyPart1") ?? "";
 }
  
 <div class="text-center">
@@ -14,15 +14,28 @@
 @using (Html.BeginForm( "Decipher", "Vigenere", FormMethod.Post) )
 {
     <div class="form-group">
+        <label class="control-label" for="Keyword">Keyword:</label>
+        @Html.TextBoxFor(m => m.Keyword, new { Class = "form-control"})
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.Keyword)</span>
+    </div>
+    <br>
+    <div class="form-group">
         <label class="control-label" for="Ciphertext">Ciphertext:</label>
         @Html.TextBoxFor(m => m.Ciphertext, new { Class = "form-control"})
         <span class="text-danger">@Html.ValidationMessageFor(m => m.Ciphertext)</span>
     </div>
+    
     <br>
     <div class="form-group">
-        <label class="control-label" for="DiffieHellmanPublicKey">DiffieHellmanPublicKey:</label>
-        @Html.TextBoxFor(m => m.DiffieHellmanPublicKey, new { Class = "form-control"})
-        <span class="text-danger">@Html.ValidationMessageFor(m => m.DiffieHellmanPublicKey)</span>
+        <label class="control-label" for="DiffieHellmanSecretKey">DiffieHellmanSecretKey:</label>
+        @Html.TextBoxFor(m => m.DiffieHellmanSecretKey, new { Class = "form-control"})
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.DiffieHellmanSecretKey)</span>
+    </div>
+    <br>
+    <div class="form-group">
+        <label class="control-label" for="DeAssociatedKey">DeAssociatedKey:</label>
+        @Html.TextBoxFor(m => m.DeAssociatedKey, new { Class = "form-control", @disabled = "disabled"} )
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.DeAssociatedKey)</span>
     </div>
     <br>
     <div class="form-group">
@@ -54,8 +67,19 @@
         }
         else
         {
+            <label class="control-label" for="Hash">Md5 Check Result:</label>
             <br>
             <input class="form-control" type="text" value="@ViewBag.Md5Verify" disabled>
+            
+            
+            if(@ViewBag.Plaintext is not null)
+            {
+                <br>
+                <label class="control-label" for="Plaintext">Vigenere Plaintext:</label>
+                <br>
+                <input class="form-control" type="text" value="@ViewBag.Plaintext" disabled>
+            }
+
         }
     }
     else

@@ -12,6 +12,12 @@
 @using (Html.BeginForm("DiffieHellmanSender", "DiffieHellman", FormMethod.Post))
 {
     <div class="form-group">
+        <label class="control-label" for="ReceiverPublicKey">Receiver Public Key (Leave Empty Until you know the value):</label>
+        @Html.TextBoxFor(m => m.ReceiverPublicKey, new { Class = "form-control"})
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.ReceiverPublicKey)</span>
+    </div>
+    <br>
+    <div class="form-group">
         <label class="control-label" for="SenderPrimeNumber">Prime Number:</label>
         @Html.TextBoxFor(m => m.SenderPrimeNumber, new { Class = "form-control"})
         <span class="text-danger">@Html.ValidationMessageFor(m => m.SenderPrimeNumber)</span>
@@ -46,9 +52,9 @@
         <input class="form-control" type="text" value="@ViewBag.SenderPublicKey" disabled>
     }
 </div>
-@* <br>
+<br>
 <div class="form-group">
-    @if(@ViewBag.SenderSecretKey is null)
+    @if(@ViewBag.SenderSecretKey is null || @ViewBag.SenderSecretKey == 0)
     {
         <input class="form-control" type="text" value="DiffieHellman secret key will be shown here" disabled>
     }
@@ -57,5 +63,5 @@
         <label class="control-label" for="SenderPublicKey">SenderSecretKey :</label>
         <input class="form-control" type="text" value="@ViewBag.SenderSecretKey" disabled>
     }
-</div> *@
+</div>
 

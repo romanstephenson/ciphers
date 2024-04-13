@@ -3,10 +3,6 @@
 
 @{
     ViewData["Title"] = "DiffieHellman Receiver";
-    
-    var SenderPrimitiveRoot = HttpContextAccessor.HttpContext.Session.GetString("DiffieSenderPrimitiveRoot");
-    var SenderPrimeNumber = HttpContextAccessor.HttpContext.Session.GetString("DiffieSenderPrimeNumber");
-    var SenderPublicKey = HttpContextAccessor.HttpContext.Session.GetString("DiffieSenderPublicKey");
 }
 
 <div class="text-center">
@@ -16,6 +12,12 @@
 
 @using (Html.BeginForm("DiffieHellmanReceiver", "DiffieHellman", FormMethod.Post))
 {
+    <div class="form-group">
+        <label class="control-label" for="SenderPublicKey">Sender Public Key (Leave Empty Until you know the value):</label>
+        @Html.TextBoxFor(m => m.SenderPublicKey, new { Class = "form-control"})
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.SenderPublicKey)</span>
+    </div>
+    <br>
     <div class="form-group">
         <label class="control-label" for="ReceiverPrimeNumber">Prime Number:</label>
         @Html.TextBoxFor(m => m.ReceiverPrimeNumber, new { Class = "form-control"})
@@ -29,24 +31,10 @@
     </div>
     <br>
     <div class="form-group">
-        <label class="control-label" for="SenderPrimitiveRoot">Primitive Root:</label>
-        @* @Html.TextBoxFor(m => m.SenderPrimitiveRoot, new { Class = "form-control"})     *@
-        <input class="form-control" type="text" value="@SenderPrimitiveRoot" disabled>
-        <span class="text-danger">@Html.ValidationMessageFor(m => m.SenderPrimitiveRoot)</span>    
-    </div>
-    <br>
-    <div class="form-group">
-        <label class="control-label" for="SenderPrimeNumber">Sender Prime Number:</label>
-        @* @Html.TextBoxFor(m => m.SenderPrimitiveRoot, new { Class = "form-control"})     *@
-        <input class="form-control" type="text" value="@SenderPrimeNumber" disabled>
-        <span class="text-danger">@Html.ValidationMessageFor(m => m.SenderPrimeNumber)</span>    
-    </div>
-    <br>
-    <div class="form-group">
-        <label class="control-label" for="SenderPublicKey">Sender Public Key:</label>
-        @* @Html.TextBoxFor(m => m.SenderPrimitiveRoot, new { Class = "form-control"})     *@
-        <input class="form-control" type="text" value="@SenderPublicKey" disabled>
-        <span class="text-danger">@Html.ValidationMessageFor(m => m.SenderPublicKey)</span>    
+        <label class="control-label" for="ReceiverPrimitiveRoot">Primitive Root:</label>
+        @Html.TextBoxFor(m => m.ReceiverPrimitiveRoot, new { Class = "form-control"})    
+        @* <input class="form-control" type="text" value="@SenderPrimitiveRoot" disabled> *@
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.ReceiverPrimitiveRoot)</span>    
     </div>
     <br>
     <div class="form-group">
@@ -66,14 +54,15 @@
     }
 </div>
 <br>
-@* <div class="form-group">
-    @if(@ViewBag.ReceiverSecretKey is null)
+<div class="form-group">
+    @if(@ViewBag.ReceiverSecretKey is null || @ViewBag.ReceiverSecretKey == 0)
     {
         <input class="form-control" type="text" value="DiffieHellman secret key will be shown here" disabled>
     }
     else
     {   
+        <label class="control-label" for="ReceiverSecretKey">Receiver Secret Key :</label>
         <input class="form-control" type="text" value="@ViewBag.ReceiverSecretKey" disabled>
     }
 </div>
-  *@
+ 
