@@ -7,39 +7,24 @@
 }
  
 <div class="text-center">
-    <h1 class="display-4">Vigenere Decipher</h1>
-    <p>Enter the keyword, CipherText and Rsa Sign:</a></p>
+    <h5 class="display-6">Vigenere Decipher</h5>
+    <p>Enter the keyword, CipherText and Rsa Sign:</p>
 </div>
 
-@using (Html.BeginForm("Decipher","Vigenere",FormMethod.Post))
+@using (Html.BeginForm( "Decipher", "Vigenere", FormMethod.Post) )
 {
     <div class="form-group">
-        <label class="control-label" for="Keyword">Keyword:</label>
-        @Html.TextBoxFor(m => m.Keyword, new { Class = "form-control"})
-        <span class="text-danger">@Html.ValidationMessageFor(m => m.Keyword)</span>
-    </div>
-    <br>
-    <div class="form-group">
-        <label class="control-label" for="Ciphertext">CipherText:</label>
-         @if(@ViewBag.Ciphertext is null)
-        {
-            <input class="form-control" type="text" value="Once your rsa sign is correct, this will be updated with ciphertext" disabled> 
-        }
-        else
-        {
-            <input class="form-control" type="text" value="@ViewBag.Ciphertext " disabled> 
-        }
-        
-        @* @Html.TextBoxFor(m => m.Ciphertext, new { Class = "form-control"}) *@
+        <label class="control-label" for="Ciphertext">Ciphertext:</label>
+        @Html.TextBoxFor(m => m.Ciphertext, new { Class = "form-control"})
         <span class="text-danger">@Html.ValidationMessageFor(m => m.Ciphertext)</span>
     </div>
     <br>
-    @* <div class="form-group">
-        <label class="control-label" for="DiffieHellmanPublicKey">DiffieHellman Public Key:</label>
+    <div class="form-group">
+        <label class="control-label" for="DiffieHellmanPublicKey">DiffieHellmanPublicKey:</label>
         @Html.TextBoxFor(m => m.DiffieHellmanPublicKey, new { Class = "form-control"})
         <span class="text-danger">@Html.ValidationMessageFor(m => m.DiffieHellmanPublicKey)</span>
     </div>
-    <br> *@
+    <br>
     <div class="form-group">
         <label class="control-label" for="RsaPublicKey">Sender Rsa Public Key:</label>
         <input class="form-control" type="text" value="@ReceiverRsaPrivateKey" disabled>   
@@ -47,7 +32,7 @@
     </div>
     <br>
     <div class="form-group">
-        <label class="control-label" for="RsaSignature">Rsa Sign of Ciphertext:</label>
+        <label class="control-label" for="RsaSignature">Sender Rsa Sign of Md5:</label>
         @Html.TextAreaFor(m => m.RsaSignature, new { Class = "form-control"})
         <span class="text-danger">@Html.ValidationMessageFor(m => m.RsaSignature) </span>
     </div>
@@ -59,21 +44,25 @@
 
 <br>
 <div class="form-group">
-    @if(@ViewBag.RsaSignMismatch is null)
+    
+    @if(@ViewBag.CheckRsaSign is null)
     {
-         @if(@ViewBag.Plaintext is null)
+        @if(@ViewBag.Md5Verify is null)
         {
-            <input class="form-control" type="text" value="Plaintext Will Appear Here" disabled>
+            <br>
+        <input class="form-control" type="text" value="Plaintext Will Appear Here" disabled>
         }
         else
         {
-            <input class="form-control" type="text" value="@ViewBag.Plaintext" disabled>
+            <br>
+            <input class="form-control" type="text" value="@ViewBag.Md5Verify" disabled>
         }
     }
     else
     {
-        <input class="form-control" type="text" value="@ViewBag.RsaSignMismatch" disabled>
+        <br>
+        <input class="form-control" type="text" value="@ViewBag.CheckRsaSign" disabled>
     }
-
+    
 </div>
 

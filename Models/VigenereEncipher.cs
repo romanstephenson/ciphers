@@ -29,7 +29,9 @@ public class VigenereEncipher
 
     public int DiffieHellmanPublicKey { get; set; }
 
-    public string? Signature { get; set; }
+    public string? Hash { get; set; }
+
+    public string? RsaSignature { get; set; }
 
     /*This attribute holds any error that may be encountered during processing.*/
     public string? Error { get; set; }
@@ -100,7 +102,7 @@ public class VigenereEncipher
         }
 
         // Return the hexadecimal string.
-        Signature = sBuilder.ToString();
+        Hash = sBuilder.ToString();
         
     }
 

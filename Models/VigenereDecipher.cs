@@ -15,18 +15,19 @@ public class VigenereDecipher
 
 
     /*This attribute will hold the keyword entered by the user*/
-    [Required]
     public string? Keyword { get; set; }
 
     /*This attribute will hold the ciphertext that is either entered by the user or generated based on plaintext*/
+    [Required]
     public string? Ciphertext { get; set; }
 
 
     public int RsaPublicKey { get; set; }
 
+    [Required]
     public int DiffieHellmanPublicKey { get; set; }
 
-    public string? Signature { get; set; }
+    public string? Hash { get; set; }
 
     [Required]
     public string? RsaSignature { get; set; }
@@ -98,13 +99,13 @@ public class VigenereDecipher
         }
 
         // Return the hexadecimal string.
-        Signature = sBuilder.ToString();
+        Hash = sBuilder.ToString();
         
     }
 
-    public bool VerifyMD5Signature(string hash, string signature)
+    public bool VerifyMD5Signature(string SenderHash, string ReceiverGeneratedHash)
     {
-        if( 0 == Comparer.Default.Compare(hash, signature) )
+        if( 0 == Comparer.Default.Compare(SenderHash, ReceiverGeneratedHash) )
         {
             return true;
         }

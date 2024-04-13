@@ -1,7 +1,7 @@
 @model VigenereEncipher;
 @inject IHttpContextAccessor HttpContextAccessor
 @{
-    ViewData["Title"] = "Vigenere Home";
+    ViewData["Title"] = "Vigenere Encipher";
     
     var SenderRsaPrivateKey1 = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaPrivateKeyPart1");
     var SenderRsaPrivateKey2 = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaPrivateKeyPart2");
@@ -9,7 +9,7 @@
     var RsaSignedMessage = HttpContextAccessor.HttpContext.Session.GetString("SenderRsaSignedMessage");
 
 
-    var SenderSignature = HttpContextAccessor.HttpContext.Session.GetString("SenderSignature");
+    var SenderMd5Hash = HttpContextAccessor.HttpContext.Session.GetString("SenderMd5Hash");
 }
 <div class="text-center">
     <h5 class="display-6">Vigenere Encipher</h5>
@@ -38,18 +38,18 @@
     <br>
     <div class="form-group">
         <label class="control-label" for="RsaPrivateKey">Rsa Private Key:</label>
-        <input class="form-control" type="text" value="@SenderRsaPrivateKey1,@SenderRsaPrivateKey2" disabled>   
+        <input class="form-control" type="text" value="@SenderRsaPrivateKey1, @SenderRsaPrivateKey2" disabled>   
         <span class="text-danger">@Html.ValidationMessageFor(m => m.RsaPrivateKey)</span>    
     </div>
     <br>
     <div class="form-group">
-        <label class="control-label" for="Signature">MD5 Hash of Encrypted Message:</label>
-        <input class="form-control" type="text" value="@SenderSignature" disabled>   
-        <span class="text-danger">@Html.ValidationMessageFor(m => m.Signature)</span> 
+        <label class="control-label" for="Hash">MD5 Hash of Encrypted Message:</label>
+        <input class="form-control" type="text" value="@SenderMd5Hash" disabled>   
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.Hash)</span> 
     </div>
     <br>
     <div class="form-group">
-        <label class="control-label" for="">Rsa Sign of Ciphertext:</label>
+        <label class="control-label" for="">Rsa Sign of Md5 Hash:</label>
         <textarea class="form-control" disabled>@RsaSignedMessage</textarea>    
     </div>
     <br>
